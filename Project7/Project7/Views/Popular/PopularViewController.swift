@@ -29,6 +29,7 @@ class PopularViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setAPI()
+        title = "Most popular"
     }
     
     // MARK: - Methods
