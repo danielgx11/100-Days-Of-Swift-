@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
         answersLabel.textAlignment = .right
         answersLabel.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
         return answersLabel
-    }()
+        }()
     var currentAnswer: UITextField = {
         let currentAnswer = UITextField()
         currentAnswer.translatesAutoresizingMaskIntoConstraints = false
@@ -68,6 +68,7 @@ class MainViewController: UIViewController {
     }()
     var letterButtons = [UIButton]()
     var activatedButtons = [UIButton]()
+    var countSolutions = 0
     var solutions = [String]()
     
     var score = 0 {
@@ -92,18 +93,23 @@ class MainViewController: UIViewController {
         if let solutionPosition = solutions.firstIndex(of: answerText) {
             activatedButtons.removeAll()
             
-            var splitAnswers = answersLabel.text?.components(separatedBy: "\n")
+            var splitAnswers = answersLabel.text?.components(separatedBy: "\n") {
+                didSet {
+                    countSolutions += 1
+                }
+            }
             splitAnswers?[solutionPosition] = answerText
             answersLabel.text = splitAnswers?.joined(separator: "\n")
             
             currentAnswer.text = ""
             score += 1
-            
-            if score % 7 == 0 {
-                let ac = UIAlertController(title: "Well done!", message: "Are you read for the next level?", preferredStyle: .alert)
-                ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
-                present(ac, animated: true)
+                        
+            if countSolutions == 7{
+                alertController("Let's Go!", message: "Are you read for the next level?", upLevel: true)
             }
+        } else {
+            alertController("Warning", message: "You typed a incorrect guess, good luck and try again!")
+            score -= 1
         }
     }
     
@@ -189,6 +195,16 @@ class MainViewController: UIViewController {
             }
         }
     }
+    
+    func alertController(_ title: String, message: String, upLevel: Bool = false) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        if upLevel {
+            ac.addAction(UIAlertAction(title: "Let's Go!", style: .default, handler: levelUp))
+        } else {
+            ac.addAction(UIAlertAction(title: "Ok!", style: .default, handler: nil))
+        }
+        present(ac, animated: true)
+    }
 }
 
 // MARK: - UI Setup
@@ -206,6 +222,8 @@ extension MainViewController {
         for row in 0..<4 {
             for col in 0..<5 {
                 let letterButton = UIButton(type: .system)
+                letterButton.layer.borderWidth = 1
+                letterButton.layer.borderColor = UIColor.lightGray.cgColor
                 letterButton.titleLabel?.font = UIFont.systemFont(ofSize: 36)
                 letterButton.setTitle("WWW", for: .normal)
                 letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
