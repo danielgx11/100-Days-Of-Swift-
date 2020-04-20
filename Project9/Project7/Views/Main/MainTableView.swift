@@ -21,20 +21,24 @@ class MainTableView: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setAPI()
+        performSelector(inBackground: #selector(setAPI), with: nil)
         customizeNavigationController()
     }
     
     // MARK: - Methods
     
-    func submit(_ petition: String) {
-        DispatchQueue.global().async {
-            self.petitions = self.originalPetitions
-            self.petitions = self.petitions.filter { $0.title.lowercased().contains(petition) }
-        }
+    @objc func showError() {
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default))
+            self.present(ac, animated: true)
         }
+    }
+    
+    func submit(_ petition: String) {
+        petitions = originalPetitions
+        self.petitions = petitions.filter { $0.title.lowercased().contains(petition) }
+        tableView.reloadData()
     }
     
     @objc func searchPetitions() {
@@ -62,13 +66,16 @@ class MainTableView: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchPetitions))
     }
     
-    func setAPI() {
+    @objc func setAPI() {
         let urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
-
+        
         if let url = URL(string: urlString) {
             if let data = try? Data(contentsOf: url) {
-                    parse(json: data)
+                parse(json: data)
+                return
             }
+        } else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
     
@@ -78,7 +85,11 @@ class MainTableView: UITableViewController {
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
             originalPetitions = jsonPetitions.results
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        } else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
 

@@ -23,7 +23,7 @@ class ViewController: UITableViewController, Storyboarded {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        accessImages()
+        performSelector(inBackground: #selector(accessImages), with: nil)
         customizeNavigationController()
     }
     
@@ -34,17 +34,19 @@ class ViewController: UITableViewController, Storyboarded {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    func accessImages() {
+    @objc func accessImages() {
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
         let items = try! fm.contentsOfDirectory(atPath: path)
         
         for item in items {
             if item.hasPrefix("nssl") {
-                // load the picture
                 pictures.append(item)
             }
         }
+        
+        performSelector(onMainThread: #selector(tableView.reloadData), with: nil, waitUntilDone: true)
+        
     }
     
     // MARK: - TableView life cycle
