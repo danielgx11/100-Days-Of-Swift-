@@ -34,14 +34,13 @@ class HangmanGameView: UIViewController {
         didSet {
             self.navigationItem.title = "Chances Remaining: \(self.chancesRemaining)"
             if self.chancesRemaining == 0 {
-                 alertController("Ops", message: "Looks like your chances are gone, good luck and try again.")
+                alertController("Ops", message: "Looks like your chances are gone, good luck and try again.", lose: true)
             }
         }
     }
     
     let buttonsView: UIView = {
         let buttonsView = UIView()
-        buttonsView.backgroundColor = .red
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
         return buttonsView
     }()
@@ -67,7 +66,7 @@ class HangmanGameView: UIViewController {
     var correctAnswer: UITextField = {
         let correctAnswer = UITextField()
         correctAnswer.isUserInteractionEnabled = false
-        correctAnswer.backgroundColor = .yellow
+        correctAnswer.backgroundColor = .systemGray6
         correctAnswer.translatesAutoresizingMaskIntoConstraints = false
         correctAnswer.textAlignment = .center
         return correctAnswer
@@ -76,7 +75,8 @@ class HangmanGameView: UIViewController {
     var currentAnswer: UITextField = {
         let currentAnswer = UITextField()
         currentAnswer.isUserInteractionEnabled = false
-        currentAnswer.backgroundColor = .green
+        currentAnswer.layer.borderWidth = 2
+        currentAnswer.layer.borderColor = UIColor(white: 3, alpha: 0.3).cgColor
         currentAnswer.placeholder = "Tap letter to guess"
         currentAnswer.textAlignment = .center
         currentAnswer.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +86,7 @@ class HangmanGameView: UIViewController {
     var submit: UIButton = {
         var submit = UIButton(type: .system)
         submit.translatesAutoresizingMaskIntoConstraints = false
+        submit.tintColor = .darkText
         submit.setTitle("SUBMIT", for: .normal)
         submit.addTarget(self, action: #selector(submitTapped), for: .touchUpInside)
         return submit
@@ -94,6 +95,7 @@ class HangmanGameView: UIViewController {
     var clear: UIButton = {
         var clear = UIButton(type: .system)
         clear.translatesAutoresizingMaskIntoConstraints = false
+        clear.tintColor = .darkText
         clear.setTitle("CLEAR", for: .normal)
         clear.addTarget(self, action: #selector(clearTapped), for: .touchUpInside)
         return clear
@@ -101,8 +103,15 @@ class HangmanGameView: UIViewController {
     
     // MARK: - Actions
     
-    @objc func userLose(_ sender: UIButton) {
-        
+    func userLose() {
+        chancesRemaining = 6
+        settingPortugueseWord()
+    }
+    
+    func userWin() {
+        chancesRemaining = 6
+        alertController("Congrats", message: "Very well, you wined that task and can advanced to next word, good luck! ")
+        settingPortugueseWord()
     }
     
     @objc func characterTapped(_ sender: UIButton) {
@@ -132,12 +141,16 @@ class HangmanGameView: UIViewController {
                 nextReplies += strLetter
                 promptWord.remove(at: promptWord.index(promptWord.startIndex, offsetBy: index))
                 promptWord.insert(letter, at: promptWord.index(promptWord.startIndex, offsetBy: index))
-                correctAnswer.text = promptWord
+                correctAnswer.text = promptWord.uppercased()
             } else {
                 continue
             }
         }
         currentAnswer.text?.removeAll()
+        
+        if promptWord.lowercased() == solution.lowercased() {
+            userWin()
+        }
     }
     
     @objc func clearTapped(_ sender: UIButton) {
@@ -165,9 +178,11 @@ class HangmanGameView: UIViewController {
     func alertController(_ title: String, message: String, lose: Bool = false) {
         let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
         if lose {
-            
+            ac.addAction(UIAlertAction(title: "try again!", style: .default, handler: { [weak self] (_) in
+                self?.userLose()
+            }))
         } else {
-            ac.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            ac.addAction(UIAlertAction(title: "Let's go", style: .cancel, handler: nil))
         }
         present(ac, animated: true)
     }
@@ -214,6 +229,7 @@ class HangmanGameView: UIViewController {
         navigationItem.leftBarButtonItem = scoreNavigationItem
         navigationItem.title = "Chances Remaining: \(chancesRemaining)"
         navigationItem.rightBarButtonItem = errorsNavigationItem
+        navigationController?.navigationBar.barTintColor = .systemPink
     }
     
 }
@@ -225,7 +241,6 @@ extension HangmanGameView {
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
         }
-    
         self.view.backgroundColor = .white
         self.view.addSubview(buttonsView)
         self.view.addSubview(correctAnswer)
@@ -233,7 +248,6 @@ extension HangmanGameView {
         self.view.addSubview(submit)
         self.view.addSubview(clear)
         
-        //TODO: Constraints
         correctAnswer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         correctAnswer.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         correctAnswer.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.25).isActive = true
@@ -262,18 +276,19 @@ extension HangmanGameView {
         let widht = 80
         let height = 40
         
-        debugPrint(widht)
-        debugPrint(height)
-        
         var index = 0
         
         for row in 0..<5 {
             for col in 0..<5 {
                 let characterButton = UIButton(type: .system)
                 characterButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-                characterButton.tintColor = .black
+                characterButton.tintColor = .darkText
                 characterButton.setTitle(allLetters[index], for: .normal)
                 characterButton.addTarget(self, action: #selector(characterTapped), for: .touchUpInside)
+                characterButton.backgroundColor = .gray
+                characterButton.layer.borderWidth = 2
+                characterButton.layer.borderColor = UIColor(white: 2, alpha: 0.3).cgColor
+                characterButton.layer.cornerRadius = 20
                 
                 let frame = CGRect(x: col * widht, y: row * height, width: widht, height: height)
                 debugPrint(frame)
@@ -286,7 +301,11 @@ extension HangmanGameView {
         }
         let zButton = UIButton(type: .system)
         zButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        zButton.tintColor = .black
+        zButton.tintColor = .darkText
+        zButton.backgroundColor = .gray
+        zButton.layer.borderWidth = 2
+        zButton.layer.borderColor = UIColor(white: 2, alpha: 0.3).cgColor
+        zButton.layer.cornerRadius = 20
         zButton.setTitle("Z", for: .normal)
         zButton.addTarget(self, action: #selector(characterTapped), for: .touchUpInside)
         let frame = CGRect(x: 2 * widht, y: 5 * height, width: widht, height: height)
