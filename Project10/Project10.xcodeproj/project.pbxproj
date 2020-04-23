@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C5D5A5B2451D823008C8D2B /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5D5A5A2451D823008C8D2B /* Person.swift */; };
 		5C661BC224507B61008B7DC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C661BC124507B61008B7DC9 /* AppDelegate.swift */; };
 		5C661BC424507B61008B7DC9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C661BC324507B61008B7DC9 /* SceneDelegate.swift */; };
 		5C661BC924507B61008B7DC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C661BC724507B61008B7DC9 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C5D5A5A2451D823008C8D2B /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		5C661BBE24507B61008B7DC9 /* Project10.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project10.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C661BC124507B61008B7DC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C661BC324507B61008B7DC9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C5D5A592451D801008C8D2B /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5C5D5A5A2451D823008C8D2B /* Person.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		5C661BB524507B61008B7DC9 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +98,7 @@
 		5C661BD924507C31008B7DC9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5C5D5A592451D801008C8D2B /* Base */,
 				5C661BE024507CEC008B7DC9 /* Main */,
 			);
 			path = Views;
@@ -207,6 +218,7 @@
 				5C661BE424507DEE008B7DC9 /* StoryboardInitialize.swift in Sources */,
 				5C661BD624507B99008B7DC9 /* MainViewController.swift in Sources */,
 				5C661BDF24507CA3008B7DC9 /* AppCoordinator.swift in Sources */,
+				5C5D5A5B2451D823008C8D2B /* Person.swift in Sources */,
 				5C661BC224507B61008B7DC9 /* AppDelegate.swift in Sources */,
 				5C661BC424507B61008B7DC9 /* SceneDelegate.swift in Sources */,
 			);
