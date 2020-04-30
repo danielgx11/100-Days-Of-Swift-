@@ -12,7 +12,7 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
     
     // MARK: - Properties
     
-    var coordinator: MainFlow?
+    weak var coordinator: MainFlow?
     var people = [Person]()
     
     // MARK: - Life Cycle
@@ -20,6 +20,7 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeNavigationController()
+        recoverPeople()
     }
     
     // MARK: - Methods
@@ -129,9 +130,9 @@ extension MainViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let ac = UIAlertController(title: "Rename or delete person", message: nil, preferredStyle: .alert)
         
-        ac.addAction(UIAlertAction(title: "Rename", style: .default, handler: { (_) in
-            let person = self.people[indexPath.item]
-            self.renamePerson(person)
+        ac.addAction(UIAlertAction(title: "Rename", style: .default, handler: { [weak self] (_) in
+            guard let person = self?.people[indexPath.item] else { return }
+            self?.renamePerson(person)
         }))
         
         ac.addAction(UIAlertAction(title: "Delete", style: .default, handler: { [weak self] (_) in
