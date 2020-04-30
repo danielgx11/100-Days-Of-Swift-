@@ -24,6 +24,30 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
     
     // MARK: - Methods
     
+    func recoverPeople() {
+        let defaults = UserDefaults.standard
+        
+        if let savedPeople = defaults.object(forKey: "people") as? Data {
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                people = try jsonDecoder.decode([Person].self, from: savedPeople)
+            } catch {
+                debugPrint("Failed to load people")
+            }
+        }
+    }
+    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(people) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "people")
+        } else {
+            debugPrint("Failed to save people.")
+        }
+    }
+    
     func customizeNavigationController() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
     }
@@ -41,6 +65,7 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
         ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self, weak ac](_) in
             guard let newName = ac?.textFields?[0].text else { return }
             person.name = newName
+            self?.save()
             self?.collectionView.reloadData()
         }))
         present(ac, animated: true)
@@ -63,6 +88,7 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         let person = Person(name: "Unknown", image: imageName)
         people.append(person)
+        save()
         collectionView.reloadData()
         
         dismiss(animated: true)
