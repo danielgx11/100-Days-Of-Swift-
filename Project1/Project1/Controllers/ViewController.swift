@@ -14,10 +14,7 @@ class ViewController: UITableViewController, Storyboarded {
     
     weak var coordinator: MainCoordinator?
     var pictures = [String]()
-    
-    // MARK: - Outlets
-    
-    
+    var counter = [SelectStormCounter]()
     
     // MARK: - Life cycle
 
@@ -25,9 +22,35 @@ class ViewController: UITableViewController, Storyboarded {
         super.viewDidLoad()
         performSelector(inBackground: #selector(accessImages), with: nil)
         customizeNavigationController()
+        recoverCounter()
+        debugPrint(counter.count)
     }
     
-    // MARK: - Funcs
+    // MARK: - Methods
+    
+    func recoverCounter() {
+        let defaults = UserDefaults.standard
+        
+        if let savedCounter = defaults.object(forKey: "counter") as? Data {
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                counter = try jsonDecoder.decode([SelectStormCounter].self, from: savedCounter)
+            } catch {
+                debugPrint("Failed to load counter")
+            }
+        }
+    }
+    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(counter) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "counter")
+        } else {
+            debugPrint("Failed to save counter")
+        }
+    }
     
     func customizeNavigationController() {
         title = "Storm View"
@@ -45,7 +68,9 @@ class ViewController: UITableViewController, Storyboarded {
             }
         }
         
-        performSelector(onMainThread: #selector(tableView.reloadData), with: nil, waitUntilDone: true)
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
         
     }
     
@@ -64,6 +89,9 @@ class ViewController: UITableViewController, Storyboarded {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let count = SelectStormCounter(count: 1)
+        counter.append(count)
+        save()
         self.coordinator?.detailImage(to: pictures[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
