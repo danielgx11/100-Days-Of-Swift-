@@ -17,6 +17,7 @@ class MainViewController: UIViewController, Storyboarded {
     var score = 0
     var correctAnswer = 0
     var plays = 0
+    var scores = [Score]()
     
     var scoreButton: UIBarButtonItem!
     var playsButton: UIBarButtonItem!
@@ -37,10 +38,17 @@ class MainViewController: UIViewController, Storyboarded {
         plays += 1
         
         if sender.tag == correctAnswer {
+            let currentScore = Score(score: 1)
+            scores.append(currentScore)
+            saveScore()
             title = "Correct"
             score += 1
             message = "Your score is \(score)"
+            bestScore()
         } else {
+            let currentScore = Score(score: -1)
+            scores.append(currentScore)
+            saveScore()
             title = "Wrong"
             score -= 1
             message = "Your score is \(score)"
@@ -55,9 +63,40 @@ class MainViewController: UIViewController, Storyboarded {
     override func viewDidLoad() {
         super.viewDidLoad()
         askQuestion()
+        recoverScore()
+        debugPrint(scores.count)
     }
     
-    // MARK: - Funcs
+    // MARK: - Methods
+    
+    func bestScore() {
+        if score > scores.count {
+            allertController(title: "Congratulations", message: "Very well! You got overcome the last best score, keep it up!")
+        }
+    }
+    
+    func recoverScore() {
+        let defaults = UserDefaults.standard
+        if let savedScore = defaults.object(forKey: "score") as? Data {
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                scores = try jsonDecoder.decode([Score].self, from: savedScore)
+            } catch {
+                debugPrint("Failed to load score")
+            }
+        }
+    }
+    
+    func saveScore() {
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(scores) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "score")
+        } else {
+            debugPrint("Failed to save score")
+        }
+    }
     
     func allertController(title: String, message: String, to go: Bool = false) {
         let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)

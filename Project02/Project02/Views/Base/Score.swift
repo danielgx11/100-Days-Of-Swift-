@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+struct Score: Codable {
+    var score: Int
+}
