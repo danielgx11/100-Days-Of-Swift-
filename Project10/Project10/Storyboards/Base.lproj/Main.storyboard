@@ -43,6 +43,7 @@
                                     </subviews>
                                 </collectionViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <size key="customSize" width="140" height="180"/>
                                 <connections>
                                     <outlet property="imageView" destination="6gD-PH-A3K" id="ecP-Uo-e8a"/>
                                     <outlet property="name" destination="xBw-I1-WHA" id="fJI-gV-NqG"/>
