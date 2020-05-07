@@ -9,6 +9,10 @@
 import UIKit
 import CoreImage
 
+enum ImageErrors: Error {
+    case EmptyImageView
+}
+
 class ViewController: UIViewController {
     
     // MARK: - Properties
@@ -19,6 +23,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var intensity: UISlider!
+    @IBOutlet var changeFilter: UIButton!
     
     // MARK: - Actions
     
@@ -36,9 +41,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func save(_ sender: Any) {
-        guard let image = imageView.image else { return }
-        
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        do {
+            let image = try checkImage()
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        } catch ImageErrors.EmptyImageView {
+            let ac = UIAlertController(title: "Warning", message: "Don't there none image in image view, choose some image and try again", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(ac, animated: true)
+        } catch {
+            fatalError("Couldn't choose none image to display in image view")
+        }
     }
     
     @IBAction func intensityChanged(_ sender: Any) {
@@ -76,15 +88,20 @@ class ViewController: UIViewController {
     
     // MARK: - Methods
     
+    func checkImage() throws -> UIImage {
+        guard let image = imageView.image else { throw ImageErrors.EmptyImageView }
+        return image
+    }
+    
     func setFilter(action: UIAlertAction) {
         guard currentImage != nil else { return }
         guard let actionTitle = action.title else { return }
-        
         currentFilter = CIFilter(name: actionTitle)
         
         let beginImage = CIImage(image: currentImage)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
+        changeFilter.setTitle("Change Filter " + (actionTitle), for: .normal)
         applyProcessing()
     }
     

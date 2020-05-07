@@ -15,13 +15,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nH8-eS-Ouk">
-                                <rect key="frame" x="20" y="88" width="375" height="665"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nH8-eS-Ouk">
+                                <rect key="frame" x="20" y="88" width="374" height="655"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UWf-ea-rTy">
-                                        <rect key="frame" x="10" y="10" width="355" height="637"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UWf-ea-rTy">
+                                        <rect key="frame" x="10" y="10" width="354" height="635"/>
                                     </imageView>
                                 </subviews>
+                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="UWf-ea-rTy" firstAttribute="centerX" secondItem="nH8-eS-Ouk" secondAttribute="centerX" id="JTT-R8-YjJ"/>
                                     <constraint firstItem="UWf-ea-rTy" firstAttribute="centerY" secondItem="nH8-eS-Ouk" secondAttribute="centerY" id="vj3-Bt-gaB"/>
@@ -45,20 +46,19 @@
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQS-N4-Qcp">
-                                <rect key="frame" x="20" y="798" width="120" height="44"/>
+                                <rect key="frame" x="20" y="798" width="92" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Ib5-ko-rhH"/>
-                                    <constraint firstAttribute="width" constant="120" id="On8-N0-k9o"/>
                                 </constraints>
                                 <state key="normal" title="Change Filter"/>
                                 <connections>
                                     <action selector="changeFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ur5-De-qTn"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DiN-Uh-0a7">
-                                <rect key="frame" x="335" y="798" width="60" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DiN-Uh-0a7">
+                                <rect key="frame" x="334" y="798" width="60" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="fP7-em-14F"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="fP7-em-14F"/>
                                 </constraints>
                                 <state key="normal" title="Save"/>
                                 <connections>
@@ -68,6 +68,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="DiN-Uh-0a7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AQS-N4-Qcp" secondAttribute="trailing" constant="8" symbolic="YES" id="3ap-kf-plw"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="AQS-N4-Qcp" secondAttribute="bottom" constant="20" id="4tD-zJ-KPF"/>
                             <constraint firstItem="nH8-eS-Ouk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CVd-VC-s0T"/>
                             <constraint firstItem="TYQ-AZ-RE3" firstAttribute="leading" secondItem="rQs-JP-U92" secondAttribute="trailing" constant="8" id="Co2-Zo-2iJ"/>
@@ -88,6 +89,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="82A-V8-yvG"/>
                     <connections>
+                        <outlet property="changeFilter" destination="AQS-N4-Qcp" id="7dg-J9-bCD"/>
                         <outlet property="imageView" destination="UWf-ea-rTy" id="HsC-2p-sYb"/>
                         <outlet property="intensity" destination="TYQ-AZ-RE3" id="lGL-Kp-MaY"/>
                     </connections>
