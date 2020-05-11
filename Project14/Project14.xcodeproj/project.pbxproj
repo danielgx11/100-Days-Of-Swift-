@@ -15,6 +15,7 @@
 		5C28308C2465EC2A00F38DBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C28308B2465EC2A00F38DBA /* Assets.xcassets */; };
 		5C28308F2465EC2A00F38DBA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C28308D2465EC2A00F38DBA /* LaunchScreen.storyboard */; };
 		5C2830992465EF0B00F38DBA /* WhackSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2830982465EF0B00F38DBA /* WhackSlot.swift */; };
+		5C8625B924699C1100DC5B24 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5C8625B824699C1100DC5B24 /* Smoke.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		5C2830962465ED4000F38DBA /* whack.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = whack.caf; sourceTree = "<group>"; };
 		5C2830972465ED4100F38DBA /* whackBad.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = whackBad.caf; sourceTree = "<group>"; };
 		5C2830982465EF0B00F38DBA /* WhackSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhackSlot.swift; sourceTree = "<group>"; };
+		5C8625B824699C1100DC5B24 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,19 +64,60 @@
 		5C28307D2465EC2800F38DBA /* Project14 */ = {
 			isa = PBXGroup;
 			children = (
-				5C28307E2465EC2800F38DBA /* AppDelegate.swift */,
-				5C2830802465EC2800F38DBA /* GameScene.sks */,
-				5C2830842465EC2800F38DBA /* GameScene.swift */,
-				5C2830862465EC2800F38DBA /* GameViewController.swift */,
-				5C2830882465EC2800F38DBA /* Main.storyboard */,
-				5C28308B2465EC2A00F38DBA /* Assets.xcassets */,
-				5C28308D2465EC2A00F38DBA /* LaunchScreen.storyboard */,
 				5C2830902465EC2A00F38DBA /* Info.plist */,
-				5C2830962465ED4000F38DBA /* whack.caf */,
-				5C2830972465ED4100F38DBA /* whackBad.caf */,
-				5C2830982465EF0B00F38DBA /* WhackSlot.swift */,
+				5C8625BD24699C1E00DC5B24 /* Delegates */,
+				5C8625BC24699C1C00DC5B24 /* Assets */,
+				5C8625BB24699C1A00DC5B24 /* Views */,
+				5C8625BA24699C1700DC5B24 /* Scenes */,
+				5C8625BE24699C9400DC5B24 /* Storyboards */,
 			);
 			path = Project14;
+			sourceTree = "<group>";
+		};
+		5C8625BA24699C1700DC5B24 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				5C2830802465EC2800F38DBA /* GameScene.sks */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		5C8625BB24699C1A00DC5B24 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5C2830842465EC2800F38DBA /* GameScene.swift */,
+				5C2830862465EC2800F38DBA /* GameViewController.swift */,
+				5C2830982465EF0B00F38DBA /* WhackSlot.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5C8625BC24699C1C00DC5B24 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				5C8625B824699C1100DC5B24 /* Smoke.sks */,
+				5C28308B2465EC2A00F38DBA /* Assets.xcassets */,
+				5C2830962465ED4000F38DBA /* whack.caf */,
+				5C2830972465ED4100F38DBA /* whackBad.caf */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		5C8625BD24699C1E00DC5B24 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				5C28307E2465EC2800F38DBA /* AppDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		5C8625BE24699C9400DC5B24 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				5C2830882465EC2800F38DBA /* Main.storyboard */,
+				5C28308D2465EC2A00F38DBA /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +181,7 @@
 				5C28308A2465EC2800F38DBA /* Main.storyboard in Resources */,
 				5C2830812465EC2800F38DBA /* GameScene.sks in Resources */,
 				5C28308C2465EC2A00F38DBA /* Assets.xcassets in Resources */,
+				5C8625B924699C1100DC5B24 /* Smoke.sks in Resources */,
 				5C28308F2465EC2A00F38DBA /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
