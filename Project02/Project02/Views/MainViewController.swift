@@ -35,6 +35,14 @@ class MainViewController: UIViewController, Storyboarded {
         var title: String
         var message: String
         
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [],
+                       animations: {
+                        sender.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        }) { (_) in
+            sender.transform = .identity
+        }
+
+        
         plays += 1
         
         if sender.tag == correctAnswer {
