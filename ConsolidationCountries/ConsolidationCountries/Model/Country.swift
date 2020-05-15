@@ -8,35 +8,29 @@
 
 import Foundation
 
-struct Country: Decodable {
-    let name: String?
-    let capital: String?
-    let countryCode: String?
-    let demonym: String?
-    let population: Int
-    let region: String
-    //let languages: [Language]
-
-    enum CodingKeys: String, CodingKey {
-        case name = "name"
-        case capital = "capital"
-        case countryCode = "alpha2Code"
-        case demonym = "demonym"
-        case population = "population"
-        case region = "region"
-    }
-}
-
 struct Language: Codable {
-    let iso6391: String?
-    let iso6392: String
-    let name: String
-    let nativeName: String
+    var iso6391: String?
+    var iso6392: String
+    var name: String
+    var nativeName: String
     
     enum CodingKeys: String, CodingKey {
+        case name, nativeName
         case iso6391 = "iso639_1"
         case iso6392 = "iso639_2"
-        case name
-        case nativeName
     }
 }
+
+struct Country: Codable {
+    var name: String
+    var capital: String
+    var alpha2Code: String
+    var alpha3Code: String
+    var region: String
+    var subregion: String
+    var demonym: String
+    var population: Int
+    var latlng: [Double]
+    var languages: [Language]
+}
+

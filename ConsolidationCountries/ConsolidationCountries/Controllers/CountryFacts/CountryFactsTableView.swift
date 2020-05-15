@@ -38,7 +38,8 @@ class CountryFactsTableView: UITableViewController {
             switch result {
             case .success(let response):
                 do {
-                    self.countries = try JSONDecoder().decode([Country].self, from: response.data)
+                    debugPrint(try response.mapJSON())
+                    self.countries = try JSONDecoder().decode(Array<Country>.self, from: response.data)
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -61,7 +62,7 @@ class CountryFactsTableView: UITableViewController {
         cell.countryImage.layer.borderWidth = 1
         cell.countryImage.layer.borderColor = UIColor.lightGray.cgColor
         cell.countryName.text = countries[indexPath.row].name
-        cell.countryImage.image = UIImage(named: getFlagFileName(code: countries[indexPath.row].countryCode!, type: .HD))
+        cell.countryImage.image = UIImage(named: getFlagFileName(code: countries[indexPath.row].alpha2Code, type: .HD))
         
         return cell
     }
@@ -77,6 +78,6 @@ class CountryFactsTableView: UITableViewController {
         let country = countries[indexPath.row]
         let destionationViewController = segue.destination as! DetailCountryView
         destionationViewController.country = country
-        destionationViewController.selectedCountryImage = UIImage(named: getFlagFileName(code: countries[indexPath.row].countryCode!, type: .HD))
+        destionationViewController.selectedCountryImage = UIImage(named: getFlagFileName(code: countries[indexPath.row].alpha2Code, type: .HD))
     }
 }
