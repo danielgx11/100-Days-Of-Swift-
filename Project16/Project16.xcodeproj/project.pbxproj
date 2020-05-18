@@ -13,6 +13,7 @@
 		5C361E01246EED1100BD0ECB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C361DFF246EED1100BD0ECB /* Main.storyboard */; };
 		5C361E03246EED1300BD0ECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C361E02246EED1300BD0ECB /* Assets.xcassets */; };
 		5C361E06246EED1300BD0ECB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C361E04246EED1300BD0ECB /* LaunchScreen.storyboard */; };
+		5C5324572472E21F00B6DB84 /* WebCapitalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5324562472E21F00B6DB84 /* WebCapitalView.swift */; };
 		5CEF2949246EEF630016F27F /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEF2948246EEF630016F27F /* Capital.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		5C361E02246EED1300BD0ECB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C361E05246EED1300BD0ECB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5C361E07246EED1300BD0ECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C5324562472E21F00B6DB84 /* WebCapitalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCapitalView.swift; sourceTree = "<group>"; };
 		5CEF2948246EEF630016F27F /* Capital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +83,7 @@
 			children = (
 				5C361DFD246EED1100BD0ECB /* ViewController.swift */,
 				5CEF2948246EEF630016F27F /* Capital.swift */,
+				5C5324562472E21F00B6DB84 /* WebCapitalView.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -167,6 +170,7 @@
 			files = (
 				5C361DFE246EED1100BD0ECB /* ViewController.swift in Sources */,
 				5C361DFA246EED1100BD0ECB /* AppDelegate.swift in Sources */,
+				5C5324572472E21F00B6DB84 /* WebCapitalView.swift in Sources */,
 				5CEF2949246EEF630016F27F /* Capital.swift in Sources */,
 				5C361DFC246EED1100BD0ECB /* SceneDelegate.swift in Sources */,
 			);

@@ -20,9 +20,25 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setAnnotations()
+        welcomeMap()
     }
 
     // MARK: - Methods
+    
+    func welcomeMap() {
+        let ac = UIAlertController(title: "Welcome to World Map", message: "Please, set your favorite kind of map!", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Satellite", style: .default, handler: setKindOfMap(_:)))
+        ac.addAction(UIAlertAction(title: "Normal", style: .default, handler: setKindOfMap(_:)))
+        present(ac, animated: true)
+    }
+    
+    func setKindOfMap(_ sender: UIAlertAction) {
+        if sender.title == "Satellite" {
+            mapView.mapType = .satellite
+        } else {
+            mapView.mapType = .standard
+        }
+    }
     
     func setAnnotations() {
         let london = Capital(title: "London", coordinate: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), info: "Home to the 2012 Summer Olympics.")
@@ -40,21 +56,18 @@ class ViewController: UIViewController {
 extension ViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        // 1
         guard annotation is Capital else { return nil }
-        // 2
+        
         let identifier = "Capital"
-        // 3
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+        annotationView?.pinTintColor = .systemPink
+        
         if annotationView == nil {
-            // 4
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = true
-            // 5
             let btn = UIButton(type: .detailDisclosure)
             annotationView?.rightCalloutAccessoryView = btn
         } else {
-            // 6
             annotationView?.annotation = annotation
         }
         return annotationView
@@ -62,11 +75,8 @@ extension ViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         guard let capital = view.annotation as? Capital else { return }
-        let placeName = capital.title
-        let placeInfo = capital.info
-        
-        let ac = UIAlertController(title: placeName, message: placeInfo, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Ok", style: .default))
-        present(ac, animated: true)
+        let webCapitalView = WebCapitalView()
+        webCapitalView.selectedURLParameter = capital.title
+        navigationController?.pushViewController(webCapitalView, animated: true)
     }
 }
