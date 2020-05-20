@@ -23,6 +23,7 @@ class DetailViewController: UIViewController, Storyboarded {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(selectedImage?.isEmpty == false, "Sorry, Selected image is empty")
         setImage()
         customizeNavigationController()
     }

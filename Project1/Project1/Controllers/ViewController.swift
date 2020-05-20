@@ -23,7 +23,6 @@ class ViewController: UITableViewController, Storyboarded {
         performSelector(inBackground: #selector(accessImages), with: nil)
         customizeNavigationController()
         recoverCounter()
-        debugPrint(counter.count)
     }
     
     // MARK: - Methods

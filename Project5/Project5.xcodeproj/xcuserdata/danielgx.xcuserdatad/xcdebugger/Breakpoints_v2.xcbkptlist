@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "13026E2D-5E4C-45B7-8E70-00E5A18C6DD3"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "784485D1-4E3F-4454-99C5-1BD8BF75B65A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            condition = "answer.count &gt;= 6"
+            continueAfterRunningActions = "No"
+            filePath = "Project5/Views/WordsTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "submit(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
