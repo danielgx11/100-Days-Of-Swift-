@@ -44,22 +44,36 @@ class GameScene: SKScene {
     let possibleEnemies = ["ball", "hammer", "tv"]
     var isGameOver = false
     var gameTimer: Timer?
+    var timerLoop = 0
+    var timeInterval: Double = 1
     
     // MARK: - Actions
     
     @objc func createEnemy() {
-        guard let enemy = possibleEnemies.randomElement() else { return }
+        if !isGameOver {
+            guard let enemy = possibleEnemies.randomElement() else { return }
 
-        let sprite = SKSpriteNode(imageNamed: enemy)
-        sprite.position = CGPoint(x: 1200, y: Int.random(in: 50...736))
-        addChild(sprite)
+            let sprite = SKSpriteNode(imageNamed: enemy)
+            sprite.position = CGPoint(x: 1200, y: Int.random(in: 50...736))
+            addChild(sprite)
 
-        sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
-        sprite.physicsBody?.categoryBitMask = 1
-        sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
-        sprite.physicsBody?.angularVelocity = 5
-        sprite.physicsBody?.linearDamping = 0
-        sprite.physicsBody?.angularDamping = 0
+            sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
+            sprite.physicsBody?.categoryBitMask = 1
+            sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
+            sprite.physicsBody?.angularVelocity = 5
+            sprite.physicsBody?.linearDamping = 0
+            sprite.physicsBody?.angularDamping = 0
+            
+            if timerLoop >= 20 {
+                timerLoop = 0
+                if timeInterval >= 0.2 {
+                    timeInterval -= 0.1
+                }
+                
+                gameTimer?.invalidate()
+                gameTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(createEnemy), userInfo: nil, repeats: true)
+            }
+        }
     }
     
     // MARK: - Game Cycle
@@ -112,6 +126,7 @@ class GameScene: SKScene {
     // MARK: - Methods
     
     func setupEnemies() {
+    
         gameTimer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(createEnemy), userInfo: nil, repeats: true)
     }
 }
