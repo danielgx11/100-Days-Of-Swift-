@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C98128E247EBA0800477C9C /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C98128D247EBA0800477C9C /* Script.swift */; };
 		5CDD6689247C010C0009A531 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDD6688247C010C0009A531 /* AppDelegate.swift */; };
 		5CDD668B247C010C0009A531 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDD668A247C010C0009A531 /* SceneDelegate.swift */; };
 		5CDD668D247C010C0009A531 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDD668C247C010C0009A531 /* ViewController.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5C98128D247EBA0800477C9C /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		5CDD6685247C010C0009A531 /* Project19.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project19.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CDD6688247C010C0009A531 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5CDD668A247C010C0009A531 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +81,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C981285247EAB0D00477C9C /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		5C981286247EAB0F00477C9C /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				5CDD668E247C010C0009A531 /* Main.storyboard */,
+				5CDD6693247C010D0009A531 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		5C981287247EAB1100477C9C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5CDD668C247C010C0009A531 /* ViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5C981288247EAB1300477C9C /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				5CDD6688247C010C0009A531 /* AppDelegate.swift */,
+				5CDD668A247C010C0009A531 /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		5CDD667C247C010C0009A531 = {
 			isa = PBXGroup;
 			children = (
@@ -100,13 +135,12 @@
 		5CDD6687247C010C0009A531 /* Project19 */ = {
 			isa = PBXGroup;
 			children = (
-				5CDD6688247C010C0009A531 /* AppDelegate.swift */,
-				5CDD668A247C010C0009A531 /* SceneDelegate.swift */,
-				5CDD668C247C010C0009A531 /* ViewController.swift */,
-				5CDD668E247C010C0009A531 /* Main.storyboard */,
-				5CDD6691247C010D0009A531 /* Assets.xcassets */,
-				5CDD6693247C010D0009A531 /* LaunchScreen.storyboard */,
 				5CDD6696247C010D0009A531 /* Info.plist */,
+				5CDD6691247C010D0009A531 /* Assets.xcassets */,
+				5C981288247EAB1300477C9C /* Delegates */,
+				5C981287247EAB1100477C9C /* Views */,
+				5C981286247EAB0F00477C9C /* Storyboards */,
+				5C981285247EAB0D00477C9C /* New Group */,
 			);
 			path = Project19;
 			sourceTree = "<group>";
@@ -119,6 +153,7 @@
 				5CDD66A6247C023B0009A531 /* MainInterface.storyboard */,
 				5CDD66A9247C023B0009A531 /* Info.plist */,
 				5CDD66B1247C05840009A531 /* Action.js */,
+				5C98128D247EBA0800477C9C /* Script.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -237,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C98128E247EBA0800477C9C /* Script.swift in Sources */,
 				5CDD66A5247C023B0009A531 /* ActionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
