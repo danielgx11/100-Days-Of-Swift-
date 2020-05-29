@@ -18,10 +18,40 @@ class GameScene: SKScene {
     let leftEdge = -22
     let bottomEdge = -22
     let rightEdge = 1024 + 22
+    var chancesRemaining = 10
+    
+    let scoreLabel: SKLabelNode = {
+        let skLabel = SKLabelNode(fontNamed: "Chalkduster")
+        skLabel.position = CGPoint(x: 8, y: 8)
+        skLabel.text = "Score: 0"
+        skLabel.horizontalAlignmentMode = .left
+        skLabel.fontSize = 48
+        return skLabel
+    }()
+    
+    lazy var gameOverLabel: SKLabelNode = {
+        let skLabel = SKLabelNode(fontNamed: "Chalkduster")
+        skLabel.position = CGPoint(x: 512, y: 384)
+        skLabel.text = "Game Over"
+        skLabel.horizontalAlignmentMode = .center
+        skLabel.fontSize = 48
+        return skLabel
+    }()
+    
+    lazy var newGameLabel: SKLabelNode = {
+        let newGameLabel = SKLabelNode(fontNamed: "chalkduster")
+        newGameLabel.position = CGPoint(x: 512, y: 334)
+        newGameLabel.horizontalAlignmentMode = .center
+        newGameLabel.zPosition = 1
+        newGameLabel.text = "> NEW GAME <"
+        newGameLabel.name = "newGame"
+        newGameLabel.fontSize = 28
+        return newGameLabel
+    }()
     
     var score = 0 {
         didSet {
-            //
+            scoreLabel.text = "Score \(score)"
         }
     }
     
@@ -29,6 +59,7 @@ class GameScene: SKScene {
     
     @objc func launchFireworks() {
         let movementAmount: CGFloat = 1800
+        chancesRemaining -= 1
         
         switch Int.random(in: 0...3) {
         case 0:
@@ -58,13 +89,18 @@ class GameScene: SKScene {
         default:
             break
         }
+        
+        if !(chancesRemaining >= 1) {
+            endGame()
+        }
     }
     
     // MARK: - Life Cycle
     
     override func didMove(to view: SKView) {
         setBackgroundImage()
-        gameTimer = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(launchFireworks), userInfo: nil, repeats: true)
+        addChild(scoreLabel)
+        startGame()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -77,6 +113,14 @@ class GameScene: SKScene {
     }
     
     // MARK: - Methods
+    
+    func startGame() {
+        score = 0
+        chancesRemaining = 10
+        gameOverLabel.removeFromParent()
+        newGameLabel.removeFromParent()
+        gameTimer = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(launchFireworks), userInfo: nil, repeats: true)
+    }
     
     func setBackgroundImage() {
         let background = SKSpriteNode(imageNamed: "background")
@@ -140,6 +184,49 @@ class GameScene: SKScene {
             node.colorBlendFactor = 0
         }
     }
+    
+    func explode(firework: SKNode) {
+        if let emitter = SKEmitterNode(fileNamed: "explode") {
+            emitter.position = firework.position
+            addChild(emitter)
+        }
+        
+        firework.removeFromParent()
+    }
+    
+    func explodeFireworks() {
+        var numExploded = 0
+        
+        for (index, fireworkContainer) in fireworks.enumerated().reversed() {
+            guard let firework = fireworkContainer.children.first as? SKSpriteNode else { continue }
+            
+            if firework.name == "selected" {
+                explode(firework: fireworkContainer)
+                fireworks.remove(at: index)
+                numExploded += 1
+            }
+        }
+        
+        switch numExploded {
+        case 0: break
+        case 1: score += 200
+        case 2: score += 500
+        case 3: score += 1500
+        case 4: score += 2500
+        default: score += 4000
+        }
+    }
+    
+    func endGame() {
+        gameTimer?.invalidate()
+        addChild(gameOverLabel)
+        addChild(newGameLabel)
+        
+        for node in fireworks {
+            node.removeFromParent()
+        }
+        
+    }
 }
 
 // MARK: - Touches
@@ -149,6 +236,13 @@ extension GameScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         checkTouches(touches)
+        for touch in touches {
+            let location = touch.location(in: self)
+            let touchedNode = atPoint(location)
+            if touchedNode.name == "newGame" {
+                startGame()
+            }
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -156,3 +250,4 @@ extension GameScene {
         checkTouches(touches)
     }
 }
+
