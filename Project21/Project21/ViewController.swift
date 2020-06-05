@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func scheduleLOcal() {
+    @objc func scheduleLocal(timeDelay: TimeInterval) {
         registerCategories()
         
         let center = UNUserNotificationCenter.current()
@@ -44,10 +44,14 @@ class ViewController: UIViewController {
         dateComponents.hour = 10
         dateComponents.minute = 30
 //        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeDelay, repeats: false)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
+    }
+    
+    @objc func initialNotification() {
+        scheduleLocal(timeDelay: 5)
     }
     
     // MARK: - Life Cycle
@@ -61,7 +65,13 @@ class ViewController: UIViewController {
     
     func customizeNavigationController() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Register", style: .plain, target: self, action: #selector(registerLocal))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Schedule", style: .plain, target: self, action: #selector(scheduleLOcal))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Schedule", style: .plain, target: self, action: #selector(initialNotification))
+    }
+    
+    func alertController(withTitle title: String, message: String) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(ac, animated: true)
     }
 }
 
@@ -75,8 +85,12 @@ extension ViewController: UNUserNotificationCenterDelegate {
             debugPrint("Custom data received: \(customData)")
             
             switch response.actionIdentifier {
-            case UNNotificationDefaultActionIdentifier: debugPrint("Default identifier")
-            case "show": debugPrint("Show more information...")
+            case UNNotificationDefaultActionIdentifier:
+                self.alertController(withTitle: "Default Alert", message: "Welcome, dear!")
+            case "show":
+                self.alertController(withTitle: "Show", message: "Welcome again,z dear!")
+            case "Remind me later":
+                self.scheduleLocal(timeDelay: 3600*24)
             default: break
             }
         }
@@ -88,7 +102,8 @@ extension ViewController: UNUserNotificationCenterDelegate {
         center.delegate = self
         
         let show = UNNotificationAction(identifier: "show", title: "Tell me more...", options: .foreground)
-        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [])
+        let remindLater = UNNotificationAction(identifier: "Remind me later", title: "24 Hours", options: .foreground)
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show, remindLater], intentIdentifiers: [])
         
         center.setNotificationCategories([category])
     }

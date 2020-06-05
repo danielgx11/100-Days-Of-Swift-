@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class MainViewController: UIViewController, Storyboarded {
     
@@ -70,12 +71,19 @@ class MainViewController: UIViewController, Storyboarded {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        requestNotificationAutorization()
         askQuestion()
         recoverScore()
         debugPrint(scores.count)
     }
     
     // MARK: - Methods
+    
+    func alertController(withTitle title: String, message: String) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(ac, animated: true)
+    }
     
     func bestScore() {
         if score > scores.count {
@@ -150,4 +158,75 @@ class MainViewController: UIViewController, Storyboarded {
     @objc func playsTapped(_ sender: UIBarButtonItem!) {
         allertController(title: "Plays", message: "You played \(plays) times")
     }
+}
+
+// MARK: - User Notification
+
+extension MainViewController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let customData = userInfo["customData"] as? String {
+            print("Custom data received: \(customData)")
+
+            switch response.actionIdentifier {
+            case UNNotificationDefaultActionIdentifier:
+                self.alertController(withTitle: "Welcome, Dear!", message: "Hello Bro, let's play game today? Go Go")
+
+            case "show":
+                self.alertController(withTitle: "Welcome again, Dear!", message: "Hey Bro, don't forget about us, we're always here. Let's play?")
+            default:
+                break
+            }
+        }
+
+        completionHandler()
+    }
+    
+    // MARK: - Notification Methods
+    
+    func registerCategories() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+
+        let show = UNNotificationAction(identifier: "show", title: "Tell me more…", options: .foreground)
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [])
+
+        center.setNotificationCategories([category])
+    }
+
+    
+    func requestNotificationAutorization() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            guard error == nil else { return }
+            if granted {
+                self.remindMePlay()
+            }
+        }
+    }
+    
+    func remindMePlay() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.removeAllPendingNotificationRequests()
+        
+        let content = UNMutableNotificationContent()
+        content.title = ""
+        content.body = ""
+        content.categoryIdentifier = ""
+        content.userInfo = ["":""]
+        content.sound = UNNotificationSound.default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 10
+        dateComponents.minute = 30
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+    }
+    
 }
