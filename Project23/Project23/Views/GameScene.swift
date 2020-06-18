@@ -21,6 +21,8 @@ class GameScene: SKScene {
     
     // MARK: - Properties
 
+    var magicXVelocity: Int?
+    var magicYVelocity: Int?
     var bombSoundEffect: AVAudioPlayer?
     var isSwooshSoundActive = false
     var gameScore: SKLabelNode!
@@ -190,7 +192,12 @@ class GameScene: SKScene {
             emitter.position = CGPoint(x: 76, y: 64)
             enemy.addChild(emitter)
         } else {
-            enemy = SKSpriteNode(imageNamed: "penguin")
+            let magicNumber = Int.random(in: 0...1)
+            if magicNumber == 0 {
+                enemy = SKSpriteNode(imageNamed: "penguin")
+            } else {
+                enemy = SKSpriteNode(imageNamed: "meme")
+            }
             run(SKAction.playSoundFileNamed("launch.caf", waitForCompletion: false))
             enemy.name = "enemy"
         }
@@ -202,16 +209,21 @@ class GameScene: SKScene {
         var randomXVelocity = 0
 
         if randomPosition.x < 256 {
-            randomXVelocity = Int.random(in: 8...15)
+            magicXVelocity = Int.random(in: 8...15)
+            randomXVelocity = magicXVelocity!
         } else if randomPosition.x < 512 {
-            randomXVelocity = Int.random(in: 3...5)
+            magicXVelocity = Int.random(in: 3...5)
+            randomXVelocity = magicXVelocity!
         } else if randomPosition.x < 768 {
-            randomXVelocity = -Int.random(in: 3...5)
+            magicXVelocity = -Int.random(in: 3...5)
+            randomXVelocity = magicXVelocity!
         } else {
-            randomXVelocity = -Int.random(in: 8...15)
+            magicXVelocity = -Int.random(in: 8...15)
+            randomXVelocity = magicXVelocity!
         }
 
-        let randomYVelocity = Int.random(in: 24...32)
+        magicYVelocity = Int.random(in: 24...32)
+        let randomYVelocity = magicYVelocity!
 
         enemy.physicsBody = SKPhysicsBody(circleOfRadius: 64)
         enemy.physicsBody?.velocity = CGVector(dx: randomXVelocity * 40, dy: randomYVelocity * 40)
@@ -224,7 +236,7 @@ class GameScene: SKScene {
     
     func tossEnemies() {
         if isGameEnded {
-            return
+            isGameOver()
         }
         
         popupTime *= 0.991
@@ -341,7 +353,7 @@ class GameScene: SKScene {
     
     func endGame(triggeredByBomb: Bool) {
         if isGameEnded {
-            return
+            isGameOver()
         }
         
         isGameEnded = true
@@ -357,6 +369,13 @@ class GameScene: SKScene {
             livesImages[2].texture = SKTexture(imageNamed: "sliceLifeGone")
         }
     }
+    
+    func isGameOver() {
+        let gameOver = SKSpriteNode(imageNamed: "gameOver")
+        gameOver.zPosition = 3
+        gameOver.position = CGPoint(x: 512, y: 384)
+        addChild(gameOver)
+    }
 }
 
 // MARK: - Touches Manager
@@ -365,6 +384,7 @@ extension GameScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if isGameEnded {
+            isGameOver()
             return
         }
         
