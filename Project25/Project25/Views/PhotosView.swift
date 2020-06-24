@@ -14,6 +14,7 @@ class PhotosView: UICollectionViewController {
     // MARK: - Properties
     
     var images = [UIImage]()
+    var texts = [String]()
     var peerID = MCPeerID(displayName: UIDevice.current.name)
     var mcSession: MCSession?
     var mcAdvertiserAssistant: MCAdvertiserAssistant?
@@ -27,12 +28,42 @@ class PhotosView: UICollectionViewController {
         present(picker, animated: true)
     }
     
+    @objc func importTxt() {
+        let ac = UIAlertController(title: "Import Text", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [unowned ac, weak self] (_) in
+            guard let text = ac.textFields?[0].text else { return }
+            self?.texts.append(text)
+        }))
+    }
+    
     @objc func showConnectionPrompt() {
         let ac = UIAlertController(title: "Connect to others", message: nil, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Host a session", style: .default, handler: startHosting))
         ac.addAction(UIAlertAction(title: "Join a session", style: .default, handler: joinSession))
         ac.addAction(UIAlertAction(title: "Cancel", style: .default))
         present(ac, animated: true)
+    }
+    
+    @objc func showPeers() {
+        var peersTxt = ""
+        
+        var peersAvailable = false
+        
+        guard let mcSession = mcSession else { return }
+        
+        if mcSession.connectedPeers.count > 0 {
+            peersAvailable = true
+            for peer in mcSession.connectedPeers {
+                peersTxt += "\n\(peer.displayName)"
+            }
+        }
+        
+        if !peersAvailable {
+            peersTxt += "\nNo peers connected!"
+        }
+        
+        alertController(message: peersTxt)
     }
     
     // MARK: - Life Cycle
@@ -47,10 +78,35 @@ class PhotosView: UICollectionViewController {
     
     func customizeNavigationController() {
         title = "Selfie Share"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(importPicture))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
+        let sendImage = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(importPicture))
+        let sendTxt = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(importTxt))
+        let session = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
+        let peers = UIBarButtonItem(title: "Peers", style: .done, target: self, action: #selector(showPeers))
+        navigationItem.leftBarButtonItems = [session, peers]
+        navigationItem.rightBarButtonItems = [sendImage, sendTxt]
     }
     
+    func alertController(title: String = "Warning", message: String? = nil) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(ac, animated: true)
+    }
+    
+    func sendTxt(_ text: String) {
+        
+        guard let mcSession = mcSession else { return }
+        if mcSession.connectedPeers.count > 0 {
+            let textData = Data(text.utf8)
+            do {
+                try mcSession.send(textData, toPeers: mcSession.connectedPeers, with: .reliable)
+            } catch {
+                let ac = UIAlertController(title: "Send Error", message: error.localizedDescription, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Ok", style: .default))
+                present(ac, animated: true, completion: nil)
+            }
+        }
+        
+    }
 }
 
 // MARK: - CollectionView Delegate
@@ -114,10 +170,15 @@ extension PhotosView: MCBrowserViewControllerDelegate, MCSessionDelegate {
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         DispatchQueue.main.async { [weak self] in
+            
             if let image = UIImage(data: data) {
                 self?.images.insert(image, at: 0)
                 self?.collectionView.reloadData()
             }
+            
+            let text = String(decoding: data, as: UTF8.self)
+            self?.texts.insert(text, at: 0)
+            self?.collectionView.reloadData()
         }
     }
     
@@ -138,7 +199,7 @@ extension PhotosView: MCBrowserViewControllerDelegate, MCSessionDelegate {
             print("Connecting: \(peerID.displayName)")
 
         case .notConnected:
-            print("Not Connected: \(peerID.displayName)")
+            alertController(message: "\(peerID.displayName) was disconnected!")
 
         @unknown default:
             print("Unknown state received: \(peerID.displayName)")
