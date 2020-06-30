@@ -15,6 +15,10 @@
 		5C26125024A4F6A3004FCAD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C26124F24A4F6A3004FCAD0 /* Assets.xcassets */; };
 		5C26125324A4F6A3004FCAD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C26125124A4F6A3004FCAD0 /* LaunchScreen.storyboard */; };
 		5C26125B24A4F73E004FCAD0 /* level1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5C26125A24A4F73E004FCAD0 /* level1.txt */; };
+		5C5B478824AB830E00A4F363 /* level2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5C5B478724AB830E00A4F363 /* level2.txt */; };
+		5C5B478A24AB831A00A4F363 /* level3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5C5B478924AB831A00A4F363 /* level3.txt */; };
+		5C5B478C24AB832600A4F363 /* level4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5C5B478B24AB832600A4F363 /* level4.txt */; };
+		5C5B478E24AB833200A4F363 /* level5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5C5B478D24AB833200A4F363 /* level5.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		5C26125224A4F6A3004FCAD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5C26125424A4F6A3004FCAD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C26125A24A4F73E004FCAD0 /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level1.txt; sourceTree = "<group>"; };
+		5C5B478724AB830E00A4F363 /* level2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = level2.txt; sourceTree = "<group>"; };
+		5C5B478924AB831A00A4F363 /* level3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = level3.txt; sourceTree = "<group>"; };
+		5C5B478B24AB832600A4F363 /* level4.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = level4.txt; sourceTree = "<group>"; };
+		5C5B478D24AB833200A4F363 /* level5.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = level5.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +76,10 @@
 				5C26126024A4F7C4004FCAD0 /* Storyboards */,
 				5C26124F24A4F6A3004FCAD0 /* Assets.xcassets */,
 				5C26125A24A4F73E004FCAD0 /* level1.txt */,
+				5C5B478724AB830E00A4F363 /* level2.txt */,
+				5C5B478924AB831A00A4F363 /* level3.txt */,
+				5C5B478B24AB832600A4F363 /* level4.txt */,
+				5C5B478D24AB833200A4F363 /* level5.txt */,
 			);
 			path = Project26;
 			sourceTree = "<group>";
@@ -171,8 +183,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C5B478A24AB831A00A4F363 /* level3.txt in Resources */,
 				5C26125B24A4F73E004FCAD0 /* level1.txt in Resources */,
 				5C26124E24A4F69F004FCAD0 /* Main.storyboard in Resources */,
+				5C5B478824AB830E00A4F363 /* level2.txt in Resources */,
+				5C5B478C24AB832600A4F363 /* level4.txt in Resources */,
+				5C5B478E24AB833200A4F363 /* level5.txt in Resources */,
 				5C26124524A4F69F004FCAD0 /* GameScene.sks in Resources */,
 				5C26125024A4F6A3004FCAD0 /* Assets.xcassets in Resources */,
 				5C26125324A4F6A3004FCAD0 /* LaunchScreen.storyboard in Resources */,
