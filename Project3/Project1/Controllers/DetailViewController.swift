@@ -48,7 +48,10 @@ class DetailViewController: UIViewController, Storyboarded {
             debugPrint("No name image found!")
             return
         }
-        let vc = UIActivityViewController(activityItems: [image, imageName], applicationActivities: [])
+        let drawImage = UIImage(data: image)
+        guard let shareImage = drawImageAndtext(withImage: drawImage, andText: "From Storm View", size: drawImage?.size) else { return }
+        
+        let vc = UIActivityViewController(activityItems: [shareImage, imageName], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true )
         
@@ -64,5 +67,33 @@ class DetailViewController: UIViewController, Storyboarded {
         if let imageToLoad = selectedImage {
             imageView.image = UIImage(named: imageToLoad)
         }
+    }
+    
+    func drawImageAndtext(withImage image: UIImage?, andText text: String, size: CGSize?) -> UIImage? {
+        guard let image = image else { return nil }
+        guard let size = size else { return nil }
+        
+        let renderer = UIGraphicsImageRenderer(size: size)
+        
+        let img = renderer.image { ctx in
+            
+            let stormImage = image
+            stormImage.draw(at: CGPoint(x: 0, y: 0))
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font : UIFont.systemFont(ofSize: 30),
+                .paragraphStyle: paragraphStyle
+            ]
+
+            let string = "From Storm Viewer"
+            let attributedString = NSAttributedString(string: string, attributes: attrs)
+
+            attributedString.draw(with: CGRect(x: 0, y: 40, width: image.size.width, height: 40), options: .usesLineFragmentOrigin, context: nil)
+        }
+        
+        return img
     }
 }

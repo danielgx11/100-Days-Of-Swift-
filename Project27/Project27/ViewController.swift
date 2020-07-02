@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     @IBAction func redrawTapped(_ sender: Any) {
         currentDrawType += 1
         
-        if currentDrawType > 5 {
+        if currentDrawType > 7 {
             currentDrawType = 0
         }
         
@@ -31,6 +31,8 @@ class ViewController: UIViewController {
         case 3: drawRotatedSquares()
         case 4: drawLines()
         case 5: drawImagesAndText()
+        case 6: drawEmoji()
+        case 7: drawTwin()
         default: break
         }
     }
@@ -64,12 +66,12 @@ class ViewController: UIViewController {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))
         
         let img = renderer.image(actions: { (ctx) in
-            let rectangle = CGRect(x: 0, y: 0, width: 512, height: 512).insetBy(dx: 5, dy: 5)
+            let circle = CGRect(x: 0, y: 0, width: 512, height: 512).insetBy(dx: 5, dy: 5)
             ctx.cgContext.setFillColor(UIColor.red.cgColor)
             ctx.cgContext.setStrokeColor(UIColor.black.cgColor)
             ctx.cgContext.setLineWidth(10)
             
-            ctx.cgContext.addEllipse(in: rectangle)
+            ctx.cgContext.addEllipse(in: circle)
             ctx.cgContext.drawPath(using: .fillStroke)
         })
         
@@ -170,5 +172,66 @@ class ViewController: UIViewController {
         imageView.image = img
     }
 
+    
+    func drawEmoji() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))
+        
+        let img = renderer.image { (ctx) in
+            let emoji = CGRect(x: 0, y: 0, width: 512, height: 512)
+            ctx.cgContext.rotate(by: .pi * 2)
+            ctx.cgContext.setFillColor(UIColor.blue.cgColor)
+            ctx.cgContext.setStrokeColor(UIColor.black.cgColor)
+            ctx.cgContext.setLineWidth(10)
+            
+            let memoji = UIImage(named: "emoji")
+            memoji?.draw(in: emoji)
+        }
+        
+        imageView.image = img
+    }
+    
+    func drawTwin() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))
+        
+        let img = renderer.image { (ctx) in
+            let cx = ctx.cgContext
+            cx.setStrokeColor(UIColor.black.cgColor)
+            cx.setLineWidth(1)
+            
+            // T
+            cx.move(to: CGPoint(x: 35, y: 40))
+            cx.addLine(to: CGPoint(x: 106, y: 40))
+            cx.move(to: CGPoint(x: 70, y: 40))
+            cx.addLine(to: CGPoint(x: 70, y: 158))
+            
+            // W
+            cx.move(to: CGPoint(x: 121, y: 40))
+            cx.addLine(to: CGPoint(x: 146, y: 158))
+            cx.move(to: CGPoint(x: 146, y: 158))
+            cx.addLine(to: CGPoint(x: 174, y: 40))
+            cx.move(to: CGPoint(x: 174, y: 40))
+            cx.addLine(to: CGPoint(x: 199, y: 158))
+            cx.move(to: CGPoint(x: 199, y: 158))
+            cx.addLine(to: CGPoint(x: 227, y: 40))
+            
+            // I
+            cx.move(to: CGPoint(x: 251, y: 40))
+            cx.addLine(to: CGPoint(x: 251, y: 158))
+            
+            // N
+            cx.move(to: CGPoint(x: 286, y: 40))
+            cx.addLine(to: CGPoint(x: 286, y: 158))
+            cx.move(to: CGPoint(x: 286, y: 40))
+            cx.addLine(to: CGPoint(x: 347, y: 158))
+            cx.move(to: CGPoint(x: 347, y: 40))
+            cx.addLine(to: CGPoint(x: 347, y: 158))
+            
+            cx.drawPath(using: .fillStroke)
+
+        }
+
+        imageView.image = img
+    }
+    
 }
 
