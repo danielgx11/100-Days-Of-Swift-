@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class MainViewController: UICollectionViewController, StoryboardInitialize {
     
@@ -14,18 +15,54 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
     
     var coordinator: MainFlow?
     var people = [Person]()
+    var authenticationEnabled = false
+    
+    // MARK: - Actions
+    
+    @objc func authenticateTapped() {
+        enableAuthentication()
+    }
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeNavigationController()
+        enableAuthentication()
     }
     
     // MARK: - Methods
     
+    func enableAuthentication() {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Identify yourself!"
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] (success, error) in
+                guard let self = self else { return }
+                DispatchQueue.main.sync {
+                    if success {
+                        self.authenticationEnabled = true
+                    } else {
+                        self.authenticationEnabled = false
+                        let ac = UIAlertController(title: "Authentication Failed", message: "Select right button - Authenticate - for enable access in your app.", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(ac, animated: true)
+                    }
+                }
+            }
+        } else {
+            let ac = UIAlertController(title: "Biometry unavailable", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
+    }
+    
     func customizeNavigationController() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Authenticate", style: .done, target: self, action: #selector(authenticateTapped))
     }
     
     func getDocumentsDirectory() -> URL {
@@ -52,6 +89,8 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
 extension MainViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard authenticationEnabled else { return }
+        
         guard let image = info[.editedImage] as? UIImage else { return }
         
         let imageName = UUID().uuidString

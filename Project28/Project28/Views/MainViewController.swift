@@ -14,6 +14,7 @@ class MainViewController: UIViewController {
     // MARK: - Properties
     
     @IBOutlet weak var secret: UITextView!
+    private var passwordKey = "admin"
     
     // MARK: - Actions
     
@@ -29,10 +30,17 @@ class MainViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     if success {
+                        self.enablePassword()
                         self.unlockSecretMessage()
                     } else {
-                        let ac = UIAlertController(title: "Authentication Failed", message: "You could not be verified; please try again.", preferredStyle: .alert)
-                        ac.addAction(UIAlertAction(title: "Ok", style: .default))
+                        let ac = UIAlertController(title: "Password", message: nil, preferredStyle: .alert)
+                        ac.addTextField()
+                        let submitAction = UIAlertAction(title: "Done", style: .default) { [unowned ac] (_) in
+                            guard let password = ac.textFields?[0].text else { return }
+                            
+                            self.authenticationWithPassword(password)
+                        }
+                        ac.addAction(submitAction)
                         self.present(ac, animated: true)
                     }
                 }
@@ -68,7 +76,13 @@ class MainViewController: UIViewController {
         KeychainWrapper.standard.set(secret.text, forKey: "SecretMessage")
         secret.resignFirstResponder()
         secret.isHidden = true
+                
         title = "Nothing to see here"
+        navigationItem.rightBarButtonItem = nil
+    }
+    
+    @objc func saveSecretPassword(_ password: String) {
+        KeychainWrapper.standard.set(password, forKey: "SecretPassword")
     }
     
     // MARK: - Life Cycle
@@ -80,6 +94,30 @@ class MainViewController: UIViewController {
     }
     
     // MARK: - Methods
+    
+    func enablePassword() {
+        let ac = UIAlertController(title: "Password", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        let submitAction = UIAlertAction(title: "Done", style: .default) { [unowned ac] (_) in
+            guard let password = ac.textFields?[0].text else { return }
+            
+            KeychainWrapper.standard.set(password, forKey: "SecretPassword")
+        }
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    func authenticationWithPassword(_ password: String) {
+        guard let oldKey = KeychainWrapper.standard.string(forKey: "SecretPassword") else { return }
+        
+        if password == oldKey {
+            unlockSecretMessage()
+        } else {
+            let ac = UIAlertController(title: "Authentication Failed", message: "You could not be verified; please try again.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default))
+            self.present(ac, animated: true)
+        }
+    }
     
     func customizeNavigationController() {
         title = "Nothing to see here"
@@ -96,6 +134,12 @@ class MainViewController: UIViewController {
         secret.isHidden = false
         title = "Secret stuff!"
         
+        activateDoneButton()
+        
         secret.text = KeychainWrapper.standard.string(forKey: "SecretMessage") ?? ""
+    }
+    
+    func activateDoneButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(saveSecretMessage))
     }
 }
