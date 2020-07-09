@@ -34,10 +34,10 @@ class BuildingNode: SKSpriteNode {
     }
     
     func drawBuilding(size: CGSize) -> UIImage {
-        //1
+
         let renderer = UIGraphicsImageRenderer(size: size)
         let img = renderer.image { (ctx) in
-            //2
+
             let rectangle = CGRect(x: 0, y: 0, width: size.width, height: size.height)
             let color: UIColor
             
@@ -50,7 +50,7 @@ class BuildingNode: SKSpriteNode {
             color.setFill()
             ctx.cgContext.addRect(rectangle)
             ctx.cgContext.drawPath(using: .fill)
-            //3
+
             let lightOnColor = UIColor(hue: 0.190, saturation: 0.67, brightness: 0.99, alpha: 1)
             let lightOffColor = UIColor(hue: 0, saturation: 0, brightness: 0.34, alpha: 1)
             
@@ -64,9 +64,26 @@ class BuildingNode: SKSpriteNode {
                     ctx.cgContext.fill(CGRect(x: col, y: row, width: 15, height: 20))
                 }
             }
-            //4
         }
         return img
+    }
+    
+    func hit(at point: CGPoint) {
+        let convertedPoint = CGPoint(x: point.x + size.width / 2.0, y: abs(point.y - (size.height / 2.0)))
+
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let img = renderer.image { ctx in
+            currentImage.draw(at: .zero)
+
+            ctx.cgContext.addEllipse(in: CGRect(x: convertedPoint.x - 32, y: convertedPoint.y - 32, width: 64, height: 64))
+            ctx.cgContext.setBlendMode(.clear)
+            ctx.cgContext.drawPath(using: .fill)
+        }
+
+        texture = SKTexture(image: img)
+        currentImage = img
+
+        configurePhysics()
     }
 
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C7EE3E424B75D3900C147A9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7EE3E324B75D3800C147A9 /* Utils.swift */; };
 		5CCFC65424B60782000FF8F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCFC65324B60782000FF8F2 /* AppDelegate.swift */; };
 		5CCFC65624B60782000FF8F2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5CCFC65524B60782000FF8F2 /* GameScene.sks */; };
 		5CCFC65A24B60782000FF8F2 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCFC65924B60782000FF8F2 /* GameScene.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C7EE3E324B75D3800C147A9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CCFC65024B60782000FF8F2 /* Project29.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project29.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CCFC65324B60782000FF8F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5CCFC65524B60782000FF8F2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C7EE3E224B75D2B00C147A9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5C7EE3E324B75D3800C147A9 /* Utils.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5CCFC64724B60782000FF8F2 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +78,7 @@
 				5CCFC66024B60784000FF8F2 /* Assets.xcassets */,
 				5CCFC67224B607E2000FF8F2 /* Delegates */,
 				5CCFC67124B607E1000FF8F2 /* Resources */,
+				5C7EE3E224B75D2B00C147A9 /* Extensions */,
 				5CCFC67324B6080F000FF8F2 /* Controllers */,
 				5CCFC67024B607DF000FF8F2 /* Views */,
 				5CCFC66F24B607DD000FF8F2 /* Storyboards */,
@@ -201,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C7EE3E424B75D3900C147A9 /* Utils.swift in Sources */,
 				5CCFC65A24B60782000FF8F2 /* GameScene.swift in Sources */,
 				5CCFC67524B608AC000FF8F2 /* BuildingNode.swift in Sources */,
 				5CCFC65C24B60782000FF8F2 /* GameViewController.swift in Sources */,

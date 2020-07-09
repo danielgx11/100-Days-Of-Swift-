@@ -48,8 +48,8 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        angleChanged(angleSlider)
-        velocityChanged(velocitySlider)
+        angleChanged(angleSlider!)
+        velocityChanged(velocitySlider!)
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
