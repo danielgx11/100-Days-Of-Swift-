@@ -20,7 +20,21 @@ class GameViewController: UIViewController {
     @IBOutlet weak var velocityLabel: UILabel!
     @IBOutlet weak var launchButton: UIButton!
     @IBOutlet weak var playerNumber: UILabel!
+    @IBOutlet weak var playerOneScore: UIButton!
+    @IBOutlet weak var playerTwoScore: UIButton!
     
+    var player1Score = 0 {
+        didSet {
+            playerOneScore.titleLabel?.text = "Player one: \(player1Score) points"
+        }
+    }
+    var player2Score = 0 {
+        didSet {
+            playerTwoScore.titleLabel?.text = "Player two: \(player2Score) points"
+        }
+    }
+    
+    var chancesRemaining = 3
     var currentGame: GameScene!
     
     // MARK: - Actions
@@ -103,5 +117,27 @@ class GameViewController: UIViewController {
         velocityLabel.isHidden = false
         
         launchButton.isHidden = false
+    }
+    
+    func endGame() -> Bool {
+        if chancesRemaining == 0 {
+            let champion = bestPlayer()
+            playerNumber.font = UIFont(name: "Chalkduster", size: 48)
+            playerNumber.text = "Player \(champion) was champion"
+            playerOneScore.isHidden = true
+            playerTwoScore.isHidden = true
+            launchButton.isHidden = true
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func bestPlayer() -> String {
+        if player1Score > player2Score {
+            return "One"
+        } else {
+            return "Two"
+        }
     }
 }

@@ -26,7 +26,7 @@ class GameScene: SKScene {
     var banana: SKSpriteNode!
     
     var currentPlayer = 1
-    
+        
     // MARK: - Life Cycle
 
     override func didMove(to view: SKView) {
@@ -151,15 +151,23 @@ class GameScene: SKScene {
         banana.removeFromParent()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let newGame = GameScene(size: self.size)
-            newGame.gameViewController = self.gameViewController
-            self.gameViewController?.currentGame = newGame
-            
-            self.changePlayer()
-            newGame.currentPlayer = self.currentPlayer
-            
-            let transition = SKTransition.doorway(withDuration: 1.5)
-            self.view?.presentScene(newGame, transition: transition)
+            if self.gameViewController?.endGame() ?? false {
+                self.player1.removeFromParent()
+                self.player2.removeFromParent()
+                self.buildings.removeAll()
+                self.banana.removeFromParent()
+            } else {
+                let newGame = GameScene(size: self.size)
+                newGame.gameViewController = self.gameViewController
+                self.gameViewController?.currentGame = newGame
+                
+                self.changePlayer()
+                newGame.currentPlayer = self.currentPlayer
+                
+                let transition = SKTransition.doorway(withDuration: 1.5)
+                self.view?.presentScene(newGame, transition: transition)
+            }
+
         }
     }
     
@@ -189,8 +197,6 @@ class GameScene: SKScene {
         
         changePlayer()
     }
-    
-
 }
 
 
@@ -198,8 +204,10 @@ class GameScene: SKScene {
 
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
+        
         let firstBody: SKPhysicsBody
         let secondBody: SKPhysicsBody
+        
 
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
@@ -217,10 +225,14 @@ extension GameScene: SKPhysicsContactDelegate {
         }
 
         if firstNode.name == "banana" && secondNode.name == "player1" {
+            gameViewController?.chancesRemaining -= 1
+            gameViewController?.player2Score += 1
             destroy(player: player1)
         }
 
         if firstNode.name == "banana" && secondNode.name == "player2" {
+            gameViewController?.chancesRemaining -= 1
+            gameViewController?.player1Score += 1
             destroy(player: player2)
         }
     }
