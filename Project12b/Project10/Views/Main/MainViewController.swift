@@ -63,8 +63,8 @@ class MainViewController: UICollectionViewController, StoryboardInitialize {
         let ac = UIAlertController(title: "Rename person", message: nil, preferredStyle: .alert)
         ac.addTextField()
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self, weak ac](_) in
-            guard let newName = ac?.textFields?[0].text else { return }
+        ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self, unowned ac] (_) in
+            guard let newName = ac.textFields?[0].text else { return }
             person.name = newName
             self?.save()
             self?.collectionView.reloadData()

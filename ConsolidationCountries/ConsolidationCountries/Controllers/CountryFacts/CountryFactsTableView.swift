@@ -59,8 +59,6 @@ class CountryFactsTableView: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as! CountryCell
-        cell.countryImage.layer.borderWidth = 1
-        cell.countryImage.layer.borderColor = UIColor.lightGray.cgColor
         cell.countryName.text = countries[indexPath.row].name
         cell.countryImage.image = UIImage(named: getFlagFileName(code: countries[indexPath.row].alpha2Code, type: .HD))
         
@@ -76,8 +74,10 @@ class CountryFactsTableView: UITableViewController {
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
         
         let country = countries[indexPath.row]
-        let destionationViewController = segue.destination as! DetailCountryView
-        destionationViewController.country = country
-        destionationViewController.selectedCountryImage = UIImage(named: getFlagFileName(code: countries[indexPath.row].alpha2Code, type: .HD))
+        
+        weak var destionationViewController = segue.destination as? DetailCountryView
+        destionationViewController?.country = country
+        let path = Bundle.main.path(forResource: getFlagFileName(code: countries[indexPath.row].alpha2Code, type: .HD), ofType: nil)!
+        destionationViewController?.selectedCountryImage = UIImage(contentsOfFile: path)!
     }
 }

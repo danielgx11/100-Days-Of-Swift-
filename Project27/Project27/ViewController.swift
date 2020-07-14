@@ -233,5 +233,9 @@ class ViewController: UIViewController {
         imageView.image = img
     }
     
+    deinit {
+        debugPrint("Project was finish")
+    }
+    
 }
 
